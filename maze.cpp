@@ -17,19 +17,19 @@ class PathFinder {
     bool DFS(int x, int y, int destRow, int destCol) {
       resultingPath.push(std::to_string(x) +"," + std::to_string(y));
 
-    if(canGoLeft..){
-      //goLeft();
+      //Är vi framme? return true
+      //Har vi redan varit här?  pop och return false
+
+    if(isValid(x-1,y)){
       DFS(x-1,y,destRow,destCol);
     }
-    if(canGoDown..){
-      //goDown();
+    if(isValid(x,y-1)){
       DFS(x,y-1,destRow,destCol);
     }
-    if(canGoRight..){
+    if(isValid(x+1,y)){
       DFS(x+1,y,destRow,destCol);
-      //goRight();
     }
-    if(canGoUp..){
+    if(isValid(x,y-1)){
       DFS(x,y-1,destRow,destCol);
     }
 
