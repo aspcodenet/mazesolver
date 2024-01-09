@@ -18,6 +18,7 @@ class PathFinder {
       resultingPath.push(std::to_string(x) +"," + std::to_string(y));
 
       //Är vi framme? return true
+      
       //Har vi redan varit här?  pop och return false
 
     if(isValid(x-1,y)){
