@@ -8,33 +8,74 @@
 class PathFinder {
      std::stack<std::string> resultingPath; // "0,0", "0,1"
      std::vector<std::vector<int>> maze;
+     std::map<std::string,bool> visited;
   public:
     PathFinder(std::vector<std::vector<int>> maze)
       :maze(maze)
     {
-    }
-
-    bool DFS(int x, int y, int destRow, int destCol) {
-      resultingPath.push(std::to_string(x) +"," + std::to_string(y));
-
-      //Är vi framme? return true
       
-      //Har vi redan varit här?  pop och return false
-
-    if(isValid(x-1,y)){
-      DFS(x-1,y,destRow,destCol);
-    }
-    if(isValid(x,y-1)){
-      DFS(x,y-1,destRow,destCol);
-    }
-    if(isValid(x+1,y)){
-      DFS(x+1,y,destRow,destCol);
-    }
-    if(isValid(x,y-1)){
-      DFS(x,y-1,destRow,destCol);
     }
 
+    std::vector<std::string> getPath(){
+         std::vector<std::string> path;
+        while(!resultingPath.empty()){
+            path.insert(path.begin(),resultingPath.top());
+            resultingPath.pop();
+        }
+        return  path;
+
+    }
+    
+
+    bool DFS(int y, int x, int destRow,int destCol) {
+        
+        std::string thisitem = std::to_string(x) +"," + std::to_string(y);
+        std::cout << "TRYING: " << thisitem << std::endl;
+        resultingPath.push(thisitem);
+
+        //Är vi framme? return true
+        if(x == destCol && y == destRow){
+          return true;
+        }
+        //Har vi redan varit här?  pop och return false
+        if(visited[thisitem] == true){
+          resultingPath.pop();
+          return false;
+        }
+
+      visited[thisitem] = true;
+      if(isValid(y,x-1)){ //LEFT
+        if(DFS(y,x-1,destRow,destCol)) {
+          return true;
+        }
+      }
+      if(isValid(y+1,x)){ // DOWN
+        if(DFS(y+1,x,destRow,destCol)){
+          return true;
+        }
+      }
+      if(isValid(y,x+1)){ //RIGHT
+        if(DFS(y,x+1,destRow,destCol) == true){
+          return true;
+        }
+      }
+      if(isValid(y-1,x)){// UP
+        if(DFS(y-1,x,destRow,destCol) == true){
+          return true;
+        }
+      }
+      resultingPath.pop();
       return false;
+    }
+
+
+    bool isValid(int y, int x){
+      if(x < 0) return false;
+      if(x >= maze[0].size() ) return false;
+      if(y >= maze.size() ) return false;
+      if(y < 0 ) return false;
+      if(maze[y][x] == 1) return false;
+      return true;
     }
 };
 
@@ -52,6 +93,10 @@ int main(){
     bool found = pathFinder.DFS(0,0,0,2);
     if(found){
       //Print på resultingPath
+      std::cout << "RESULT: " << std::endl;
+      for(auto s: pathFinder.getPath()){
+        std::cout << s << std::endl;
+      }
     }
 
 
